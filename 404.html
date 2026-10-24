@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voice Of Amin</title>
+<meta name="robots" content="noindex">
+<!--
+  GitHub Pages সার্ভার-সাইড রাউটিং দেয় না। কেউ সরাসরি /trend, /article/xyz বা /admin ঠিকানা খুললে
+  GitHub এই 404.html দেখায়। এই স্ক্রিপ্ট ঠিকানাটাকে index.html-এ পাঠায় (?/trend আকারে),
+  আর index.html সেটাকে আবার সুন্দর ঠিকানায় ফিরিয়ে আনে। ফাইলটি বদলাবেন না।
+-->
+<script>
+(function () {
+  var l = window.location;
+  var keep = /\.github\.io$/i.test(l.hostname) ? 1 : 0;      // project site হলে ১, কাস্টম ডোমেইন/ইউজার সাইট হলে ০
+  var path = l.pathname.split('/').slice(keep + 1).join('/').replace(/&/g, '~and~');
+  l.replace(
+    l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+    l.pathname.split('/').slice(0, 1 + keep).join('/') + '/?/' + path +
+    (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+    l.hash
+  );
+})();
+</script>
+</head>
+<body style="font-family:sans-serif;padding:2rem">
+<p>লোড হচ্ছে... যদি কিছু না ঘটে, <a href="./">হোমপেজে যান</a>।</p>
+</body>
+</html>

@@ -1,0 +1,11 @@
+# Voice Of Amin
+# ⚠ বিঃদ্রঃ: সার্চ ইঞ্জিন শুধু ডোমেইনের মূল ফোল্ডারের (/robots.txt) ফাইল পড়ে।
+# github.io/voice-of-amin/ প্রজেক্ট সাইটে এই ফাইল সেখানে পৌঁছায় না;
+# কাস্টম ডোমেইন বা username.github.io রিপোজিটরিতে বসালে কাজ করবে।
+# SITE_URL বদলালে নিচের Sitemap লাইনও বদলান।
+User-agent: *
+Allow: /
+Disallow: /voice-of-amin/admin
+Disallow: /admin
+
+Sitemap: https://amin356-bd.github.io/voice-of-amin/sitemap.xml

@@ -1,0 +1,68 @@
+rules_version = '2';
+
+// ===========================================================================
+// Voice Of Amin - Firestore Security Rules
+// Firebase Console > Firestore Database > Rules ট্যাবে এই পুরো লেখা পেস্ট করে Publish করুন।
+//
+// ⚠ নিচের ADMIN ইমেইল (একটাই জায়গায়) আপনার অ্যাডমিন Gmail ঠিকানা দিয়ে মিলিয়ে নিন।
+//   এটি js/config.js-এর ADMIN_EMAIL-এর সমান হতে হবে (ছোট হাতের অক্ষরে লিখুন)।
+// ===========================================================================
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---- শুধু যাচাইকৃত অ্যাডমিন Google account ----
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email == 'aminulibrahim356@gmail.com';   // ← এখানে অ্যাডমিন ইমেইল
+    }
+
+    // ---- গল্পের ডেটা সঠিক আকারে আছে কিনা ----
+    function validStory() {
+      let d = request.resource.data;
+      return d.title is string && d.title.size() > 0 && d.title.size() <= 300
+        && d.category in ['VOICE', 'TREND', 'INSIGHT']
+        && d.summary is string && d.summary.size() <= 1500
+        && d.content is string && d.content.size() <= 200000
+        && d.publishedAt is timestamp
+        && d.featured is bool
+        && (!('image' in d) || (d.image is string && d.image.size() <= 950000));
+    }
+
+    // ---- খসড়া সঠিক আকারে আছে কিনা (প্রকাশিত গল্পের চেয়ে শিথিল) ----
+    function validDraft() {
+      let d = request.resource.data;
+      return d.title is string && d.title.size() > 0 && d.title.size() <= 300
+        && d.category in ['VOICE', 'TREND', 'INSIGHT']
+        && d.summary is string && d.summary.size() <= 1500
+        && d.content is string && d.content.size() <= 200000
+        && d.publishedAt is timestamp
+        && d.featured is bool
+        && (!('image' in d) || (d.image is string && d.image.size() <= 950000));
+    }
+
+    // খসড়া: পড়া, লেখা, মোছা সবই শুধু অ্যাডমিন। পাবলিক কখনো দেখতে পায় না।
+    match /drafts/{draftId} {
+      allow read, delete: if isAdmin();
+      allow create, update: if isAdmin() && validDraft();
+    }
+
+    // গল্প: সবাই পড়তে পারবে; লেখা/মোছা শুধু অ্যাডমিন
+    match /stories/{storyId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && validStory();
+      allow delete: if isAdmin();
+    }
+
+    // সাইট সেটিংস: সবাই পড়তে পারবে; লেখা শুধু অ্যাডমিন
+    match /settings/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // বাকি সবকিছু বন্ধ
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
