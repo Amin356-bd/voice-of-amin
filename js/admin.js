@@ -74,7 +74,7 @@ export async function mountAdmin(ctx) {
       } catch (e) {
         console.error("[VOA admin] login", e);
         if (!alive()) return;
-        const text = fb.friendlyError(e);
+        const text = `${fb.friendlyError(e)} | CODE: ${e?.code || "NO_CODE"} | MESSAGE: ${e?.message || "NO_MESSAGE"}`;
         msg.className = "adm-error";
         msg.setAttribute("role", "alert");
         msg.textContent = text;
