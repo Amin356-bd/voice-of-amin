@@ -74,8 +74,7 @@ export function friendlyError(err) {
   };
   if (map[code]) return map[code];
   if (typeof navigator !== "undefined" && navigator.onLine === false) return "ইন্টারনেট সংযোগ নেই।";
-  return "কিছু একটা সমস্যা হয়েছে। আবার চেষ্টা করুন।";
-}
+  return `কিছু একটা সমস্যা হয়েছে। Error: ${code || "unknown"} — ${msg || "No message"}`;
 
 /* ---------- Authentication ---------- */
 export function isAdminUser(user) {
