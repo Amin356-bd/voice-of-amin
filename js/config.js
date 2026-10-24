@@ -14,7 +14,7 @@ export const ADMIN_EMAIL = "aminulibrahim356@gmail.com";
    (এগুলো Web App config; এটি গোপন চাবি নয়। Service-account key কখনোই এখানে দেবেন না।)
    ------------------------------------------------------------------------- */
 export const firebaseConfig = {
-  apiKey: apiKey: "AIzaSyDs7IKQqVTqKh8FHtySds12edw504a2gHk",
+  apiKey:"AIzaSyDs7IKQqVTqKh8FHtySds12edw504a2gHk",
   authDomain: "voice-of-amin.firebaseapp.com",
   projectId: "voice-of-amin",
   storageBucket: "voice-of-amin.firebasestorage.app",
